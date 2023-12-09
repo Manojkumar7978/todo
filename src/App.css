@@ -9,3 +9,6 @@
   border-radius: 10px;
   background-color: #ffffff44
 }
+.active{
+  color: blue !important;
+}

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Header from './components/header';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import Todolist from './components/todolist';
+import Filter from './components/filter';
 
 // Function to fetch todos from API
 async function fetchTodos() {
@@ -23,11 +24,12 @@ function App() {
   let [todo, setTodo] = useState([])
   let [newTask, setNewTask] = useState(undefined)
   const toast = useToast()
+  let [active,setActive]=useState(1)
 
   // to showing toast
   const Showtoast = (type, msg) => {
     toast({
-      title: `${msg=='Mark as Pending!' ? 'PENDING' : type.toUpperCase()}`,
+      title: `${msg == 'Mark as Pending!' ? 'PENDING' : type.toUpperCase()}`,
       description: msg,
       status: type,
       duration: 3000,
@@ -41,8 +43,8 @@ function App() {
   }
   // function to add a new task on click add button
   const handelAddbtn = () => {
-    if(newTask===undefined || newTask==="" || newTask===" "){
-      Showtoast('error','Please Enter Valid Task...')
+    if (newTask === undefined || newTask === "" || newTask === " ") {
+      Showtoast('error', 'Please Enter Valid Task...')
       return
     }
     let data = JSON.parse(localStorage.getItem('data'))
@@ -59,8 +61,9 @@ function App() {
     data.unshift(newObj)
     localStorage.setItem('data', JSON.stringify(data))
     setTodo([...data])
-    Showtoast('success',"New task added successfully!")
+    Showtoast('success', "New task added successfully!")
     setNewTask(undefined)
+    setActive(1)
   }
 
   useEffect(() => {
@@ -85,7 +88,7 @@ function App() {
         left={'50%'}
         transform={'translate(-50%,-50%)'}
         padding={5}
-        // boxShadow={'md'}
+      // boxShadow={'md'}
       >
         <Header dark={dark} setDark={setDark} />
 
@@ -117,14 +120,15 @@ function App() {
             />
           </InputGroup>
         </Box>
-
-          <Box mt={5} w={'100%'}
-           padding={5} borderRadius={10} bg={dark ? '#24273d' : 'gray.200'}>
-
-          </Box>
+            {/* filter section  */}
+              <Filter dark={dark} todo={todo} 
+              active={active} setActive={setActive}
+              setTodo={setTodo}/>
 
         {/* all todo listing  */}
-        <Todolist setTodo={setTodo} todo={todo} dark={dark} Showtoast={Showtoast} />
+        <Todolist 
+        active={active}
+        setTodo={setTodo} todo={todo} dark={dark} Showtoast={Showtoast} />
       </Box>
     </Box>
   );

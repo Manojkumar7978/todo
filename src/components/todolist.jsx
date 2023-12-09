@@ -3,7 +3,7 @@ import { Box, Flex, Popover, PopoverArrow, PopoverCloseButton, PopoverContent, P
 import React from 'react'
 import { Edittask } from './edittask'
 
-export default function Todolist({ todo, setTodo, dark, Showtoast }) {
+export default function Todolist({ todo, setTodo, dark, Showtoast,active}) {
 
     // function to handel task compled or not 
     const handelCompetion = (id) => {
@@ -54,16 +54,18 @@ export default function Todolist({ todo, setTodo, dark, Showtoast }) {
                         maxH={'70px'}
                     >
                         <Flex alignItems={'center'} gap={3}>
-                            <Switch onChange={() => {
+                            <Switch
+                            disabled={active!==1}
+                            onChange={() => {
                                 handelCompetion(ind)
                             }} colorScheme='green'
                                 size={'md'}
                                 id='isChecked' isChecked={el.completed} />
                             <Text noOfLines={2} fontSize={'14PX'} color={dark ? 'white' : 'black'}>{el.title.toUpperCase()}</Text>
                         </Flex>
-                        <Flex gap={3}>
-                            <Edittask dark={dark} el={el} ind={ind} setTodo={setTodo} Showtoast={Showtoast}/>
-                            <DeleteIcon w={5} h={5} cursor={'pointer'} color={'red.400'}
+                        <Flex gap={3} display={active!==1 && 'none'}>
+                            <Edittask  dark={dark} el={el} ind={ind} setTodo={setTodo} Showtoast={Showtoast}/>
+                            <DeleteIcon  w={5} h={5} cursor={'pointer'} color={'red.400'}
                                 onClick={() => {
                                     handelDelete(ind)
                                 }}
