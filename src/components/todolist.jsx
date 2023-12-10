@@ -2,8 +2,9 @@ import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import { Box, Flex, Popover, PopoverArrow, PopoverCloseButton, PopoverContent, PopoverTrigger, Switch, Text, useDisclosure } from '@chakra-ui/react'
 import React from 'react'
 import { Edittask } from './edittask'
+import Skeliton from './skeliton'
 
-export default function Todolist({ todo, setTodo, dark, Showtoast,active}) {
+export default function Todolist({ todo, setTodo, dark, Showtoast, active }) {
 
     // function to handel task compled or not 
     const handelCompetion = (id) => {
@@ -36,43 +37,45 @@ export default function Todolist({ todo, setTodo, dark, Showtoast,active}) {
 
 
     return (
-        <Box mt={5} h={'350px'} overflowY={'auto'}
+        <Box mt={5} maxH={'350px'} overflowY={'auto'}
             className={`scroll ${dark ? 'dark' : 'light'}`}
             display={'grid'}
             gap={5}
         >
             {
-                todo.map((el, ind) => {
-                    return <Box key={el.id}
-                        p={5}
-                        borderRadius={10}
-                        bg={dark ? '#24273d' : 'gray.200'}
-                        fontWeight={'500'}
-                        display={'flex'}
-                        alignItems={'center'}
-                        justifyContent={'space-between'}
-                        maxH={'70px'}
-                    >
-                        <Flex alignItems={'center'} gap={3}>
-                            <Switch
-                            disabled={active!==1}
-                            onChange={() => {
-                                handelCompetion(ind)
-                            }} colorScheme='green'
-                                size={'md'}
-                                id='isChecked' isChecked={el.completed} />
-                            <Text noOfLines={2} fontSize={'14PX'} color={dark ? 'white' : 'black'}>{el.title.toUpperCase()}</Text>
-                        </Flex>
-                        <Flex gap={3} display={active!==1 && 'none'}>
-                            <Edittask  dark={dark} el={el} ind={ind} setTodo={setTodo} Showtoast={Showtoast}/>
-                            <DeleteIcon  w={5} h={5} cursor={'pointer'} color={'red.400'}
-                                onClick={() => {
-                                    handelDelete(ind)
-                                }}
-                            />
-                        </Flex>
-                    </Box>
-                })
+                todo === null ? <Skeliton /> :
+
+                    todo.map((el, ind) => {
+                        return <Box key={el.id}
+                            p={5}
+                            borderRadius={10}
+                            bg={dark ? '#24273d' : 'gray.200'}
+                            fontWeight={'500'}
+                            display={'flex'}
+                            alignItems={'center'}
+                            justifyContent={'space-between'}
+                            maxH={'70px'}
+                        >
+                            <Flex alignItems={'center'} gap={3}>
+                                <Switch
+                                    disabled={active !== 1}
+                                    onChange={() => {
+                                        handelCompetion(ind)
+                                    }} colorScheme='green'
+                                    size={'md'}
+                                    id='isChecked' isChecked={el.completed} />
+                                <Text noOfLines={2} fontSize={'14PX'} color={dark ? 'white' : 'black'}>{el.title.toUpperCase()}</Text>
+                            </Flex>
+                            <Flex gap={3} display={active !== 1 && 'none'}>
+                                <Edittask dark={dark} el={el} ind={ind} setTodo={setTodo} Showtoast={Showtoast} />
+                                <DeleteIcon w={5} h={5} cursor={'pointer'} color={'red.400'}
+                                    onClick={() => {
+                                        handelDelete(ind)
+                                    }}
+                                />
+                            </Flex>
+                        </Box>
+                    })
             }
 
         </Box>

@@ -1,6 +1,6 @@
 import './App.css';
 import { Box, Flex, Input, InputGroup, Stack, Switch, Text, useToast } from '@chakra-ui/react'
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Header from './components/header';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import Todolist from './components/todolist';
@@ -21,11 +21,11 @@ async function fetchTodos() {
 
 function App() {
   let [dark, setDark] = useState(true)
-  let [todo, setTodo] = useState([])
+  let [todo, setTodo] = useState(JSON.parse(localStorage.getItem('data')) || null)
   let [newTask, setNewTask] = useState(undefined)
   const toast = useToast()
   let [active,setActive]=useState(1)
-
+  const ref=useRef()
   // to showing toast
   const Showtoast = (type, msg) => {
     toast({
@@ -62,22 +62,26 @@ function App() {
     localStorage.setItem('data', JSON.stringify(data))
     setTodo([...data])
     Showtoast('success', "New task added successfully!")
-    setNewTask(undefined)
     setActive(1)
+   ref.current.value=""
   }
 
+
+  // initial todo task default task fetch from api
   useEffect(() => {
-    fetchTodos()
+    if(todo===null){
+      fetchTodos()
       .then((res) => {
         setTodo([...res])
         localStorage.setItem('data', JSON.stringify(res))
       })
+    }
   }, [])
 
 
 
   return (
-    <Box className="App" w={'100vw'}
+    <Box  w={'100vw'}
       h={'100vh'}
       bg={dark ? '#23272f' : '#fff'} position={'relative'}>
       <Box w={['100%', '100%', '50%']} h={'90%'}
@@ -101,10 +105,11 @@ function App() {
             color={dark ? 'white' : 'black'}
           >
             <Input fontSize={'14PX'} h={14}
+            ref={ref}
               placeholder='Enter a new task here...'
               border={'1px solid gray'}
               mr={2}
-              value={newTask}
+              // value={newTask}
               onChange={(e) => {
                 handelInputChange(e)
               }}

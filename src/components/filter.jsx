@@ -39,11 +39,14 @@ export default function Filter({dark,todo,setTodo,active,setActive}) {
     useEffect(()=>{
         setPending(0)
         let data=JSON.parse(localStorage.getItem('data'))
-        data.map((el,ind)=>{
-            if(!el.completed){
-            setPending((x)=>x+ +1)
-            }
-        })
+        if(data!==null){
+            data.map((el,ind)=>{
+                if(!el.completed){
+                setPending((x)=>x+ +1)
+                }
+            })
+        }
+        
         
     },[todo])
 
