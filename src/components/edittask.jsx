@@ -5,7 +5,7 @@ import React, { useState } from "react";
 
 export const Edittask = ({dark,el,ind,setTodo,Showtoast}) => {
     const { onOpen, onClose, isOpen } = useDisclosure()
-    let[updatedTask,setUpdatedTask]=useState()
+    let[updatedTask,setUpdatedTask]=useState(el.title)
 
     //handel edit submit button
     const handelEditTask=()=>{

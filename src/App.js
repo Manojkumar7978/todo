@@ -43,6 +43,7 @@ function App() {
   }
   // function to add a new task on click add button
   const handelAddbtn = () => {
+    console.log(newTask)
     if (newTask === undefined || newTask === "" || newTask === " ") {
       Showtoast('error', 'Please Enter Valid Task...')
       return
@@ -61,9 +62,11 @@ function App() {
     data.unshift(newObj)
     localStorage.setItem('data', JSON.stringify(data))
     setTodo([...data])
+    ref.current.value=""
+   setNewTask("")  // to clear the input data
     Showtoast('success', "New task added successfully!")
     setActive(1)
-   ref.current.value=""
+   
   }
 
 
