@@ -3,6 +3,10 @@
 ## Description
 - This is a Todo application built using React.js, HTML, CSS, and Chakra UI. It allows users to manage tasks by adding, editing, and deleting them. The application fetches default initial tasks from an external API and provides functionalities to interact with them.
 
+## Deployed Link
+- https://todo-delta-lovat.vercel.app/
+
+
 ## Features
 - Listing all the task.
 - Input a new task.
